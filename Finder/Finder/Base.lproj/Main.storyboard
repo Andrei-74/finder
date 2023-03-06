@@ -7,7 +7,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Root View Controller-->
+        <!--Finder-->
         <scene sceneID="8Cc-sq-0JZ">
             <objects>
                 <tableViewController id="LJp-Ec-ZKy" customClass="MainViewController" customModule="Finder" customModuleProvider="target" sceneMemberID="viewController">
@@ -30,7 +30,7 @@
                             <outlet property="delegate" destination="LJp-Ec-ZKy" id="ZOH-t9-ESD"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="6T3-Tu-1Iv"/>
+                    <navigationItem key="navigationItem" title="Finder" id="6T3-Tu-1Iv"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="s6s-wB-4UX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -43,6 +43,9 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="xPk-gS-HpE">
                         <rect key="frame" x="0.0" y="59" width="393" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <textAttributes key="titleTextAttributes">
+                            <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="32"/>
+                        </textAttributes>
                     </navigationBar>
                     <connections>
                         <segue destination="LJp-Ec-ZKy" kind="relationship" relationship="rootViewController" id="QMy-bP-QVF"/>
