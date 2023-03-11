@@ -12,7 +12,7 @@ class MainViewController: UITableViewController {
     
 
     //let placed
-    let things = Thing.getThings()
+    var things = Thing.getThings()
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -29,10 +29,18 @@ class MainViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! CustomTableViewCell
 
-        cell.nameLabel.text = things[indexPath.row].name
-        cell.locationLabel.text = things[indexPath.row].location
-        cell.typeLabel.text = things[indexPath.row].type
-        cell.imageOfThing.image = UIImage(named: things[indexPath.row].image)
+        let thing = things[indexPath.row]
+
+        cell.nameLabel.text = thing.name
+        cell.locationLabel.text = thing.location
+        cell.typeLabel.text = thing.type
+
+        if thing.image == nil {
+            cell.imageOfThing.image = UIImage(named: thing.imageThing!)
+        } else {
+            cell.imageOfThing.image = thing.image
+        }
+        
         cell.imageOfThing.layer.cornerRadius = cell.imageOfThing.frame.size.height / 2
         cell.imageOfThing.clipsToBounds = true
         return cell
@@ -48,5 +56,12 @@ class MainViewController: UITableViewController {
         // Pass the selected object to the new view controller.
     }
     */
-    @IBAction func cancelAction(_ segue: UIStoryboardSegue) {}
+    @IBAction func unwindSegue(_ segue: UIStoryboardSegue) {
+
+        guard let newThingVC = segue.source as? NewThingViewController else { return }
+        newThingVC.saveNewThing()
+        things.append(newThingVC.newThing!)
+        tableView.reloadData()
+
+    }
 }

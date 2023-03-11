@@ -8,10 +8,19 @@
 import UIKit
 
 class NewThingViewController: UITableViewController {
-    @IBOutlet var ImageThing: UIImageView!
+    var newThing: Thing?
+    var imageIsChanged = false
+    @IBOutlet var thingName: UITextField!
+    @IBOutlet var thingImage: UIImageView!
 
+    @IBOutlet var thingType: UITextField!
+    @IBOutlet var thingLocation: UITextField!
+    @IBOutlet var saveButton: UIBarButtonItem!
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        saveButton.isEnabled = false
+        thingName.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
 
 
     }
@@ -47,6 +56,24 @@ class NewThingViewController: UITableViewController {
         }
     }
 
+    func saveNewThing() {
+        var image: UIImage?
+
+        if imageIsChanged {
+            image = thingImage.image
+        } else {
+            image = #imageLiteral(resourceName: "photo")
+        }
+        newThing = Thing(name: thingName.text!,
+                         location: thingLocation.text,
+                         type: thingType.text,
+                         image: image,
+                         imageThing: nil)
+    }
+    @IBAction func cancelAction(_ sender: Any) {
+        dismiss(animated: true)
+    }
+
 }
 
 // MARK: Text field delegate
@@ -58,7 +85,13 @@ extension NewThingViewController: UITextFieldDelegate {
         textField.resignFirstResponder()
         return true
     }
-
+    @objc private func textFieldChanged() {
+        if thingName.text?.isEmpty == false {
+            saveButton.isEnabled = true
+        } else {
+            saveButton.isEnabled = false
+        }
+    }
 }
 
 // MARK: Work with image
@@ -75,9 +108,10 @@ extension NewThingViewController: UIImagePickerControllerDelegate, UINavigationC
         }
     }
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        ImageThing.image = info[.editedImage] as? UIImage
-        ImageThing.contentMode = .scaleAspectFill
-        ImageThing.clipsToBounds = true
+        thingImage.image = info[.editedImage] as? UIImage
+        thingImage.contentMode = .scaleAspectFill
+        thingImage.clipsToBounds = true
+        imageIsChanged = true
         dismiss(animated: true)
     }
 }
