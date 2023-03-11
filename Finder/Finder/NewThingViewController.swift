@@ -8,6 +8,7 @@
 import UIKit
 
 class NewThingViewController: UITableViewController {
+    @IBOutlet var ImageThing: UIImageView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,14 +55,21 @@ extension NewThingViewController: UITextFieldDelegate {
 
 // MARK: Work with image
 
-extension NewThingViewController {
+extension NewThingViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     func chooseImagePicker(source: UIImagePickerController.SourceType) {
         if UIImagePickerController.isSourceTypeAvailable(source) {
             let imagePicker = UIImagePickerController()
+            imagePicker.delegate = self
             imagePicker.allowsEditing = true
             imagePicker.sourceType = source
             present(imagePicker, animated: true)
         }
+    }
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        ImageThing.image = info[.editedImage] as? UIImage
+        ImageThing.contentMode = .scaleAspectFill
+        ImageThing.clipsToBounds = true
+        dismiss(animated: true)
     }
 }

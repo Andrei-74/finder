@@ -271,6 +271,9 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="save" id="fVD-Ag-SL7"/>
                     </navigationItem>
+                    <connections>
+                        <outlet property="ImageThing" destination="riV-mq-WPe" id="DXI-Fz-ZVd"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="opO-Uy-U4z" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="mBx-B3-7tr" userLabel="Exit" sceneMemberID="exit"/>
