@@ -5,25 +5,34 @@
 //  Created by Андрей Костицин on 06.03.2023.
 //
 
-import UIKit
+import RealmSwift
 //PlaceModel
 //struct Place
-struct Thing {
+class Thing: Object {
 
-    var name: String
-    var location: String?
-    var type: String?
-    var image: UIImage?
-    var imageThing: String?
-    //restaurantNames = thingNames
-    static let thingNames = ["Шок", "Бочка", "Bonsai"]
+    @objc dynamic var name = ""
+    @objc dynamic var location: String?
+    @objc dynamic var type: String?
+    @objc dynamic var imageData: Data?
 
-    //func getPlaces
-    static func getThings() -> [Thing] {
-        var things = [Thing]()
+
+    let thingNames = ["Шок", "Бочка", "Bonsai"]
+
+
+   func saveThings() {
+
         for thing in thingNames {
-            things.append(Thing(name: thing, location: "Уфа", type: "Рест", image: nil, imageThing: thing))
+            let image = UIImage(named: thing)
+            guard let imageData = image?.pngData() else { return }
+            let newThing = Thing()
+
+            newThing.name = thing
+            newThing.location = "Ufa"
+            newThing.type = "rest"
+            newThing.imageData = imageData
+
+            StorageManager.saveObject(newThing)
         }
-        return things
+
     }
 }

@@ -8,7 +8,7 @@
 import UIKit
 
 class NewThingViewController: UITableViewController {
-    var newThing: Thing?
+    var newThing = Thing()
     var imageIsChanged = false
     @IBOutlet var thingName: UITextField!
     @IBOutlet var thingImage: UIImageView!
@@ -18,6 +18,9 @@ class NewThingViewController: UITableViewController {
     @IBOutlet var saveButton: UIBarButtonItem!
     override func viewDidLoad() {
         super.viewDidLoad()
+        DispatchQueue.main.async {
+            self.newThing.saveThings()
+        }
 
         saveButton.isEnabled = false
         thingName.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
@@ -64,11 +67,11 @@ class NewThingViewController: UITableViewController {
         } else {
             image = #imageLiteral(resourceName: "photo")
         }
-        newThing = Thing(name: thingName.text!,
-                         location: thingLocation.text,
-                         type: thingType.text,
-                         image: image,
-                         imageThing: nil)
+//        newThing = Thing(name: thingName.text!,
+//                         location: thingLocation.text,
+//                         type: thingType.text,
+//                         image: image,
+//                         imageThing: nil)
     }
     @IBAction func cancelAction(_ sender: Any) {
         dismiss(animated: true)
