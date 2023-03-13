@@ -45,6 +45,16 @@ class MainViewController: UITableViewController {
         return cell
     }
 
+    // MARK: - Table view delegate
+
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let thing = things[indexPath.row]
+        let deleteAction = UITableViewRowAction(style: .default, title: "Delete") { (_, _) in
+            StorageManager.deleteObject(thing)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
+        return [deleteAction]
+    }
 
     /*
     // MARK: - Navigation
