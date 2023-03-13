@@ -15,24 +15,11 @@ class Thing: Object {
     @objc dynamic var type: String?
     @objc dynamic var imageData: Data?
 
-
-    let thingNames = ["Шок", "Бочка", "Bonsai"]
-
-
-   func saveThings() {
-
-        for thing in thingNames {
-            let image = UIImage(named: thing)
-            guard let imageData = image?.pngData() else { return }
-            let newThing = Thing()
-
-            newThing.name = thing
-            newThing.location = "Ufa"
-            newThing.type = "rest"
-            newThing.imageData = imageData
-
-            StorageManager.saveObject(newThing)
-        }
-
+    convenience init(name: String, location: String?, type: String?, imageData: Data?) {
+        self.init()
+        self.name = name
+        self.location = location
+        self.type = type
+        self.imageData = imageData
     }
 }
