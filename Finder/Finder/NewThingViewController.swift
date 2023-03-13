@@ -8,7 +8,7 @@
 import UIKit
 
 class NewThingViewController: UITableViewController {
-
+    var currentThing: Thing?
     var imageIsChanged = false
     @IBOutlet var thingName: UITextField!
     @IBOutlet var thingImage: UIImageView!
@@ -21,7 +21,7 @@ class NewThingViewController: UITableViewController {
         
         saveButton.isEnabled = false
         thingName.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
-
+        setupEditScreen()
 
     }
 // MARK: Table view delegate
@@ -56,7 +56,7 @@ class NewThingViewController: UITableViewController {
         }
     }
 
-    func saveNewThing() {
+    func saveThing() {
 
         var image: UIImage?
 
@@ -69,7 +69,39 @@ class NewThingViewController: UITableViewController {
         let imageData = image?.pngData()
         let newThing = Thing(name: thingName.text!,
                              location: thingLocation.text, type: thingType.text, imageData: imageData)
-        StorageManager.saveObject(newThing)
+        if currentThing != nil {
+            try! realm.write {
+                currentThing?.name = newThing.name
+                currentThing?.location = newThing.location
+                currentThing?.type = newThing.type
+                currentThing?.imageData = newThing.imageData
+            }
+        } else {
+            StorageManager.saveObject(newThing)
+        }
+
+    }
+
+    private func setupEditScreen() {
+        if currentThing != nil {
+            setupNavigationBar()
+            imageIsChanged = true
+            guard let data = currentThing?.imageData, let image = UIImage(data: data) else { return }
+            thingImage.image = image
+            thingImage.contentMode = .scaleAspectFill
+            thingName.text = currentThing?.name
+            thingLocation.text = currentThing?.location
+            thingType.text = currentThing?.type
+        }
+    }
+
+    private  func setupNavigationBar() {
+        if let topItem = navigationController?.navigationBar.topItem {
+            topItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        }
+        navigationItem.leftBarButtonItem = nil
+        title = currentThing?.name
+        saveButton.isEnabled = true
     }
     @IBAction func cancelAction(_ sender: Any) {
         dismiss(animated: true)
