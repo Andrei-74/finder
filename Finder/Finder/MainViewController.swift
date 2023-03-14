@@ -13,8 +13,11 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     @IBOutlet var tableView: UITableView!
 
+    @IBOutlet var segmentedControl: UISegmentedControl!
     //let placed
+    @IBOutlet var reverseSortingButton: UIBarButtonItem!
     var things: Results<Thing>!
+    var ascendingSorting = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,7 +44,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
 
 
-        cell.imageOfThing.layer.cornerRadius = cell.imageOfThing.frame.size.height / 2
+        cell.imageOfThing.layer.cornerRadius = cell.imageOfThing.frame.size.height / 4
         cell.imageOfThing.clipsToBounds = true
         return cell
     }
@@ -76,5 +79,29 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
         tableView.reloadData()
 
+    }
+    
+    @IBAction func reverseSorting(_ sender: Any) {
+        ascendingSorting.toggle()
+        if ascendingSorting {
+            reverseSortingButton.image = #imageLiteral(resourceName: "AZ")
+        } else {
+            reverseSortingButton.image = #imageLiteral(resourceName: "ZA")
+        }
+        sorting()
+    }
+
+    @IBAction func sortSelection(_ sender: UISegmentedControl) {
+        sorting()
+    }
+
+    private func sorting() {
+        if segmentedControl.selectedSegmentIndex == 0 {
+            things = things.sorted(byKeyPath: "name", ascending: ascendingSorting)
+        } else {
+            things = things.sorted(byKeyPath: "date", ascending: ascendingSorting)
+        }
+
+        tableView.reloadData()
     }
 }
