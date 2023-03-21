@@ -14,14 +14,13 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @IBOutlet var tableView: UITableView!
 
     @IBOutlet var segmentedControl: UISegmentedControl!
-    //let placed
+
     @IBOutlet var reverseSortingButton: UIBarButtonItem!
     var things: Results<Thing>!
     var ascendingSorting = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         things = realm.objects(Thing.self)
     }
 
@@ -31,26 +30,19 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         return things.isEmpty ? 0 : things.count
     }
 
-
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! CustomTableViewCell
-
         let thing = things[indexPath.row]
 
         cell.nameLabel.text = thing.name
         cell.locationLabel.text = thing.location
         cell.typeLabel.text = thing.type
         cell.imageOfThing.image = UIImage(data: thing.imageData!)
-
-
-
         cell.imageOfThing.layer.cornerRadius = cell.imageOfThing.frame.size.height / 4
         cell.imageOfThing.clipsToBounds = true
         return cell
     }
-
     // MARK: - Table view delegate
-
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let thing = things[indexPath.row]
         let deleteAction = UITableViewRowAction(style: .default, title: "Delete") { (_, _) in
@@ -59,10 +51,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
         return [deleteAction]
     }
-
-
      //MARK: - Navigation
-
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showDetail" {
             guard let indexPath = tableView.indexPathForSelectedRow else { return }
@@ -71,14 +60,10 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
             newThingVC.currentThing = thing
         }
     }
-
     @IBAction func unwindSegue(_ segue: UIStoryboardSegue) {
-
         guard let newThingVC = segue.source as? NewThingViewController else { return }
         newThingVC.saveThing()
-
         tableView.reloadData()
-
     }
     
     @IBAction func reverseSorting(_ sender: Any) {
@@ -94,14 +79,12 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @IBAction func sortSelection(_ sender: UISegmentedControl) {
         sorting()
     }
-
     private func sorting() {
         if segmentedControl.selectedSegmentIndex == 0 {
             things = things.sorted(byKeyPath: "name", ascending: ascendingSorting)
         } else {
             things = things.sorted(byKeyPath: "date", ascending: ascendingSorting)
         }
-
         tableView.reloadData()
     }
 }

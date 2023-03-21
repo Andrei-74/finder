@@ -12,31 +12,28 @@ class NewThingViewController: UITableViewController {
     var imageIsChanged = false
     @IBOutlet var thingName: UITextField!
     @IBOutlet var thingImage: UIImageView!
-
     @IBOutlet var thingType: UITextField!
     @IBOutlet var thingLocation: UITextField!
     @IBOutlet var saveButton: UIBarButtonItem!
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         saveButton.isEnabled = false
         thingName.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
         setupEditScreen()
-
     }
 // MARK: Table view delegate
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
-
             let cameraIcon = #imageLiteral(resourceName: "camera")
             let photoIcon = #imageLiteral(resourceName: "photo")
             let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+
             let camera = UIAlertAction(title: "Camera", style: .default) { _ in
                 self.chooseImagePicker(source: .camera)
             }
             camera.setValue(cameraIcon, forKey: "image")
             camera.setValue(CATextLayerAlignmentMode.left, forKey: "titleTextAlignment")
-
 
             let photo = UIAlertAction(title: "Photo", style: .default) { _ in
                 self.chooseImagePicker(source: .photoLibrary)
@@ -49,7 +46,6 @@ class NewThingViewController: UITableViewController {
             actionSheet.addAction(camera)
             actionSheet.addAction(photo)
             actionSheet.addAction(cancel)
-
             present(actionSheet, animated: true)
         } else {
             view.endEditing(true)
@@ -57,15 +53,12 @@ class NewThingViewController: UITableViewController {
     }
 
     func saveThing() {
-
         var image: UIImage?
-
         if imageIsChanged {
             image = thingImage.image
         } else {
             image = #imageLiteral(resourceName: "photo")
         }
-
         let imageData = image?.pngData()
         let newThing = Thing(name: thingName.text!,
                              location: thingLocation.text, type: thingType.text, imageData: imageData)
@@ -113,7 +106,6 @@ class NewThingViewController: UITableViewController {
 
 extension NewThingViewController: UITextFieldDelegate {
     //скрываем клавиатуру при нажатию на DONE
-
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
@@ -130,7 +122,6 @@ extension NewThingViewController: UITextFieldDelegate {
 // MARK: Work with image
 
 extension NewThingViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-
     func chooseImagePicker(source: UIImagePickerController.SourceType) {
         if UIImagePickerController.isSourceTypeAvailable(source) {
             let imagePicker = UIImagePickerController()

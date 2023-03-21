@@ -8,7 +8,7 @@
 import UIKit
 
 class CustomTableViewCell: UITableViewCell {
-    //var imageOfPlace
+
     @IBOutlet var imageOfThing: UIImageView!
 
     @IBOutlet weak var nameLabel: UILabel!
@@ -16,6 +16,4 @@ class CustomTableViewCell: UITableViewCell {
     @IBOutlet weak var locationLabel: UILabel!
 
     @IBOutlet weak var typeLabel: UILabel!
-
-
 }

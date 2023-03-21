@@ -6,8 +6,7 @@
 //
 
 import RealmSwift
-//PlaceModel
-//struct Place
+
 class Thing: Object {
 
     @objc dynamic var name = ""
